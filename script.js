@@ -36,10 +36,10 @@ if(torch&&!reduceMotion){
  const setTorch=(x,y)=>{torch.style.setProperty("--torch-x",x+"px");torch.style.setProperty("--torch-y",y+"px");torch.style.setProperty("--torch-size",window.innerWidth<600?"108px":"168px")};
  const pointer=e=>{const r=torch.getBoundingClientRect();cancelAnimationFrame(torchRaf);torchRaf=requestAnimationFrame(()=>setTorch(e.clientX-r.left,e.clientY-r.top))};
  const touch=e=>{if(e.pointerType==="touch"){active=!active;torch.style.opacity=active?".88":"1";pointer(e)}else pointer(e)};
- torch.addEventListener("pointermove",pointer);torch.addEventListener("pointerdown",touch);
+ const hero=document.querySelector(".hero");if(hero){hero.addEventListener("pointermove",pointer);hero.addEventListener("pointerdown",touch);}
  const leave=()=>{if(!active){torch.style.setProperty("--torch-x","50%");torch.style.setProperty("--torch-y","45%")}};
  torch.addEventListener("pointerleave",leave);
- window.addEventListener("pagehide",()=>{cancelAnimationFrame(torchRaf);torch.removeEventListener("pointermove",pointer);torch.removeEventListener("pointerdown",touch);torch.removeEventListener("pointerleave",leave)},{once:true});
+ window.addEventListener("pagehide",()=>{cancelAnimationFrame(torchRaf);hero?.removeEventListener("pointermove",pointer);hero?.removeEventListener("pointerdown",touch);torch.removeEventListener("pointerleave",leave)},{once:true});
 } else if(torch){torch.remove()}
 
 // GSAP owns scroll reveals and SVG drawing; Framer Motion owns the CTA and overlay transitions.
